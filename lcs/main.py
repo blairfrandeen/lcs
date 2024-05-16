@@ -42,7 +42,9 @@ def read_cookie():
         with open("cookie", "r") as cf:
             cookie = cf.read()
     except FileNotFoundError:
-        raise click.UsageError("Could not find cookie")
+        raise click.UsageError(
+            "Could not find cookie. Run lcs set-cookie --help for instructions."
+        )
     return cookie
 
 
@@ -53,6 +55,14 @@ def cli():
 
 @cli.command()
 def set_cookie() -> None:
+    """Set your session cookie.
+
+    1. Navitage your browser to https://leetcode.com and make sure you're logged in.
+    2. Press ctrl+shift+i to open the inspector
+    3. Go to the network tab
+    4. Refresh the page and look at the headers in the GET requests
+    5. Find the cookie, right click and copy the value, and paste it here.
+    """
     cookie = input("Paste cookie: ")
     with open("cookie", "w") as cf:
         cf.write(cookie)
@@ -61,6 +71,7 @@ def set_cookie() -> None:
 @cli.command()
 @click.argument("solution_url")
 def solution(solution_url: str) -> None:
+    """Output text suitable for posting solution to Zulip"""
     submission_id = re.search(r"submissions/(\d+)", solution_url)
     if not submission_id:
         raise click.UsageError("Invalid URL Specified")
