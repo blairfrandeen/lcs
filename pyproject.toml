@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lcs"
+version = "0.1.0"
+requires-python = ">=3.8"
+authors = [
+  {name = "Blair Frandeen", email = "blair@blairfrandeen.com"},
+]
+dependencies = [
+  "click==8.1.7",
+  "click-default-group==1.2.4",
+  "requests==2.31.0"
+]
+description = "Automatically format your leetcode solutions for posting to Zulip"
+readme = "README.md"
+classifiers = [
+  "Programming Language :: Python"
+]
+
+[project.scripts]
+lcs = "lcs:main.cli"
+
