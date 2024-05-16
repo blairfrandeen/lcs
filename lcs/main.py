@@ -4,6 +4,7 @@ import re
 import click
 from click_default_group import DefaultGroup
 import requests
+import pyperclip
 
 
 ENDPOINT = "https://leetcode.com/graphql"
@@ -48,6 +49,15 @@ def read_cookie():
     return cookie
 
 
+def solution_str(submission_details: dict) -> str:
+    solstr = f"```spoiler [{submission_details['question']['title']}]"
+    solstr += "(https://leetcode.com/problems/{submission_details['question']['titleSlug']}) | :python:\n"
+    solstr += f"```{submission_details['lang']['name']}\n"
+    solstr += submission_details["code"]
+    solstr += "```\n```"
+    return solstr
+
+
 @click.group(cls=DefaultGroup, default="solution")
 def cli():
     pass
@@ -83,15 +93,10 @@ def solution(solution_url: str) -> None:
     if response.status_code == 200:
         data = response.json()
         submission_details = data["data"]["submissionDetails"]
-        print(f"```spoiler [{submission_details['question']['title']}]", end="")
-        print(
-            f"(https://leetcode.com/problems/{submission_details['question']['titleSlug']})",
-            end="",
-        )
-        print(" | :python:")
-        print(f"```{submission_details['lang']['name']}")
-        print(submission_details["code"])
-        print(f"```\n```")
+        sol = solution_str(submission_details)
+        print(sol)
+        pyperclip.copy(sol)
+        print("Copied to your clipboard.")
     else:
         print("Request failed with status code:", response.status_code)
 
