@@ -54,7 +54,7 @@ def solution_str(submission_details: dict) -> str:
     solstr += f"(https://leetcode.com/problems/{submission_details['question']['titleSlug']}) | :python:\n"
     solstr += f"```{submission_details['lang']['name']}\n"
     solstr += submission_details["code"]
-    solstr += "```\n```"
+    solstr += "\n```\n```"
     return solstr
 
 
